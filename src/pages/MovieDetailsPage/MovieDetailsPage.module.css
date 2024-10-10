@@ -1,0 +1,47 @@
+.movieDetailsPage {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  button {
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  button:hover {
+    background-color: #555;
+  }
+  
+  .additionalInfo {
+    margin-top: 20px;
+  }
+  
+  .additionalInfo h3 {
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .additionalInfo ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .additionalInfo li {
+    margin: 10px 0;
+  }
+  
+  .additionalInfo a {
+    text-decoration: none;
+    color: #007BFF;
+  }
+  
+  .additionalInfo a:hover {
+    text-decoration: underline;
+  }
+  

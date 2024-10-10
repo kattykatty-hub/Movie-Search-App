@@ -1,0 +1,18 @@
+.homePage {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .loader,
+  .errorMessage {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
