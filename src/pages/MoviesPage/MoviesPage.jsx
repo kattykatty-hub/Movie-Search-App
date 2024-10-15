@@ -23,8 +23,8 @@ function MoviesPage() {
           `https://api.themoviedb.org/3/search/movie?query=${query}&language=en-US`,
           {
             headers: {
-              Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlOGY4YzBhMTBhNjJiNDQ4NTVhMGQ1ODc5OGQyNTU2NCIsIm5iZiI6MTcyNzg2MzI0NC42ODE3NDUsInN1YiI6IjY2ZmQxODA5NjdiMmExNjQ2NmQwNmIxMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.bVDNPLMEW4O0ifcTc_2wT71GrhEjCZzDFaCUcFhURPI`
-            }
+              Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlOGY4YzBhMTBhNjJiNDQ4NTVhMGQ1ODc5OGQyNTU2NCIsIm5iZiI6MTcyNzg2MzI0NC42ODE3NDUsInN1YiI6IjY2ZmQxODA5NjdiMmExNjQ2NmQwNmIxMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.bVDNPLMEW4O0ifcTc_2wT71GrhEjCZzDFaCUcFhURPI`, 
+            },
           }
         );
         setMovies(data.results);
@@ -52,9 +52,10 @@ function MoviesPage() {
       />
       {loading && <p>Loading...</p>}
       {error && <p className={styles.error}>{error}</p>}
-      <MovieList movies={movies} />
+      {movies.length > 0 ? <MovieList movies={movies} /> : <p>No movies found.</p>}
     </div>
   );
 }
 
 export default MoviesPage;
+

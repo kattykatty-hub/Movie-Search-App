@@ -1,33 +1,55 @@
-import { useRef } from 'react';
-import { getImagePath } from '../../api/tmdb';
-import style from './MovieDetails.module.css';
+import { getMovieDetails } from "../../api/tmdb";
+import { useEffect, useState, useRef } from "react";
+import { useParams, useNavigate, useLocation, Outlet, Link } from "react-router-dom";
+import MovieDetails from "../../components/MovieDetails/MovieDetails";
+import style from "./MovieDetailsPage.module.css";
 
-const MovieDetails = ({ movie }) => {
-  const imageRef = useRef(null);
+const MovieDetailsPage = () => {
+  const [movieData, setMovieData] = useState(null);
+  const { movieId } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Use useRef to store the previous location
+  const prevLocationRef = useRef(location.state?.from || '/');
 
-  if (!movie) {
-    return null;
-  }
+  useEffect(() => {
+    const fetchMovieDetails = async () => {
+      try {
+        const data = await getMovieDetails(movieId);
+        setMovieData(data);
+      } catch (error) {
+        console.error("Error fetching movie details:", error);
+      }
+    };
 
-  const genres = movie.genres.map((genre) => genre.name).join(", ");
+    fetchMovieDetails();
+  }, [movieId]);
+
+  const handleGoBack = () => {
+    navigate(prevLocationRef.current);
+  };
 
   return (
-    <div className={style.movieDetails}>
-      <div>
-        <img ref={imageRef} src={getImagePath(movie.poster_path)} alt={`${movie.title} poster`} />
+    <div className={style.movieDetailsPage}>
+      <button onClick={handleGoBack}>Go Back</button>
+      {movieData && <MovieDetails movie={movieData} />}
+      
+      <div className={style.additionalInfo}>
+        <h3>Additional Information</h3>
+        <ul>
+          <li>
+            <Link to="cast" state={{ from: prevLocationRef.current }}>Cast</Link>
+          </li>
+          <li>
+            <Link to="reviews" state={{ from: prevLocationRef.current }}>Reviews</Link>
+          </li>
+        </ul>
       </div>
-      <div>
-        <h1>
-          {movie.title} ({movie.release_date.slice(0, 4)})
-        </h1>
-        <p>User score: {Math.round(movie.vote_average * 10)}%</p>
-        <h2>Overview</h2>
-        <p>{movie.overview}</p>
-        <h3>Genres</h3>
-        <p>{genres}</p>
-      </div>
+
+      <Outlet context={movieId} />
     </div>
   );
 };
 
-export default MovieDetails;
+export default MovieDetailsPage;
