@@ -1,45 +1,33 @@
-import { getMovieDetails } from "../../api/tmdb";
-import { useEffect, useState } from "react";
-import { useParams, useNavigate, Outlet, Link } from "react-router-dom";
-import MovieDetails from "../../components/MovieDetails/MovieDetails";
-import style from "./MovieDetailsPage.module.css";
+import { useRef } from 'react';
+import { getImagePath } from '../../api/tmdb';
+import style from './MovieDetails.module.css';
 
-const MovieDetailsPage = () => {
-  const [movieData, setMovieData] = useState(null);
-  const { movieId } = useParams();
-  const navigate = useNavigate();
+const MovieDetails = ({ movie }) => {
+  const imageRef = useRef(null);
 
-  useEffect(() => {
-    const fetchMovieDetails = async () => {
-      const data = await getMovieDetails(movieId);
-      setMovieData(data);
-    };
+  if (!movie) {
+    return null;
+  }
 
-    fetchMovieDetails();
-  }, [movieId]);
+  const genres = movie.genres.map((genre) => genre.name).join(", ");
 
   return (
-    <div className={style.movieDetailsPage}>
-      <button onClick={() => navigate(-1)}>Go Back</button>
-      {movieData && <MovieDetails movie={movieData} />}
-      
-      {/* Additional Information Links */}
-      <div className={style.additionalInfo}>
-        <h3>Additional Information</h3>
-        <ul>
-          <li>
-            <Link to="cast">Cast</Link>
-          </li>
-          <li>
-            <Link to="reviews">Reviews</Link>
-          </li>
-        </ul>
+    <div className={style.movieDetails}>
+      <div>
+        <img ref={imageRef} src={getImagePath(movie.poster_path)} alt={`${movie.title} poster`} />
       </div>
-
-      {/* Outlet for nested components */}
-      <Outlet context={movieId} />
+      <div>
+        <h1>
+          {movie.title} ({movie.release_date.slice(0, 4)})
+        </h1>
+        <p>User score: {Math.round(movie.vote_average * 10)}%</p>
+        <h2>Overview</h2>
+        <p>{movie.overview}</p>
+        <h3>Genres</h3>
+        <p>{genres}</p>
+      </div>
     </div>
   );
 };
 
-export default MovieDetailsPage;
+export default MovieDetails;
